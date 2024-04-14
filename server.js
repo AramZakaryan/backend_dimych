@@ -48,3 +48,5 @@ const server = http.createServer(
 )
 
 server.listen(3007)
+
+fetch("http://localhost", {headers:{someKey: "ome value"}})
