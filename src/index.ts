@@ -1,14 +1,19 @@
-const express = require('express')
+import express from'express'
+// const express = require('express')
 const app = express()
 const port = 3008
 
 app
     .get('/', (req, res) => {
+        const a = 8
+        if(a>5) {
+            res.send('lala===')
+        }else{
         res.send('Hello World!')
-
+        }
     })
     .get("/users", (req, res) => {
-        res.send("some users")
+        res.send("some users!!")
     })
     .post("/user", (req, res) => {
         res.send("some new user created")
