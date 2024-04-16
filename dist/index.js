@@ -4,77 +4,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-// const express = require('express')
 const app = (0, express_1.default)();
+app.use(express_1.default.json()); // middleware
 const port = 3008;
+const db = {
+    users: [
+        { id: 1, name: "Gago jaja" },
+        { id: 2, name: "Suso tota" },
+        { id: 3, name: "Valo jaja" },
+        { id: 4, name: "Luso tota" },
+        { id: 5, name: "Peto jaja" }
+    ]
+};
 app
     .get('/', (req, res) => {
-    const a = 8;
-    if (a > 5) {
-        res.send('lala===');
-    }
-    else {
-        res.send('Hello World!');
-    }
-})
-    .get("/users", (req, res) => {
-    res.send("some users!!");
+    res.json(db);
 })
     .post("/user", (req, res) => {
-    res.send("some new user created");
+    if (!req.body.name) {
+        res.sendStatus(400);
+        return;
+    }
+    const user = { id: +(new Date()), name: req.body.name };
+    db.users.push(user);
+    res
+        .status(201)
+        .json(user);
+})
+    .get("/user/:id", (req, res) => {
+    const user = db.users.find(u => u.id === +req.params.id);
+    if (!user) {
+        res.sendStatus(404);
+        return;
+    }
+    res.json(user);
+})
+    .delete("/user/:id", (req, res) => {
+    db.users = db.users.filter(u => u.id !== +req.params.id);
+    res.sendStatus(204);
 });
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
-// const http = require("http")
-// const fs = require("fs")
-//
-// const delay = (ms) => {
-//     return new Promise(res => {
-//         setTimeout(() => res(), ms)
-//     })
-// }
-//
-// const myReadFile = (path) => {
-//     return new Promise((res, rej) => {
-//         fs.readFile(path, (err, data) => {
-//             if (err) {
-//                 rej(err)
-//             } else {
-//                 res(data)
-//             }
-//         })
-//     })
-// }
-//
-// const index = http.createServer(
-//     async (request, response) => {
-//         switch (request.url) {
-//             case "/home": {
-//                 try {
-//                     const data = await myReadFile("pages/home.html")
-//                     response.write(data)
-//                 } catch (err) {
-//                     response.write("some error")
-//                 } finally {
-//                     response.end()
-//                 }
-//                 break
-//             }
-//             case "/about": {
-//                 await delay(3000)
-//                 response.write("this is about (just a statement)")
-//                 response.end()
-//                 break
-//             }
-//             default: {
-//                 response.write("404 not found")
-//                 response.end()
-//             }
-//         }
-//     }
-// )
-//
-// index.listen(3007)
-//
-// fetch("http://localhost", {headers:{someKey: "ome value"}})
