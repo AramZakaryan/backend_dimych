@@ -2,7 +2,7 @@ import express from 'express'
 
 const app = express()
 app.use(express.json()) // middleware
-const port = 3008
+const port = process.env.PORT || 3008
 
 const db = {
     users: [
