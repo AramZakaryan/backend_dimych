@@ -33,9 +33,9 @@ app
             .json(user)
     })
     .get("/user/:id", (req, res) => {
-        const user= db.users.find(u=>u.id===+req.params.id)
+        const user = db.users.find(u => u.id === +req.params.id)
 
-        if(!user) {
+        if (!user) {
             res.sendStatus(404)
             return
         }
@@ -44,8 +44,21 @@ app
 
     })
     .delete("/user/:id", (req, res) => {
-        db.users = db.users.filter(u=>u.id!==+req.params.id)
+        db.users = db.users.filter(u => u.id !== +req.params.id)
         res.sendStatus(204)
+    })
+    .put("/user/:id", (req, res) => {
+        if (!req.body.name) {
+            res.sendStatus(400)
+            return
+        }
+        const user = db.users.find(u => u.id === +req.params.id)
+        if (!user) {
+            res.sendStatus(404)
+            return
+        }
+        user.name = req.body.name
+        res.json(user)
     })
 
 app.listen(port, () => {

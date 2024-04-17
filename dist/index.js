@@ -18,7 +18,10 @@ const db = {
 };
 app
     .get('/', (req, res) => {
-    res.json("I have done it");
+    res.json("Hello !");
+})
+    .get('/users', (req, res) => {
+    res.json(db);
 })
     .post("/user", (req, res) => {
     if (!req.body.name) {
@@ -42,6 +45,19 @@ app
     .delete("/user/:id", (req, res) => {
     db.users = db.users.filter(u => u.id !== +req.params.id);
     res.sendStatus(204);
+})
+    .put("/user/:id", (req, res) => {
+    if (!req.body.name) {
+        res.sendStatus(400);
+        return;
+    }
+    const user = db.users.find(u => u.id === +req.params.id);
+    if (!user) {
+        res.sendStatus(404);
+        return;
+    }
+    user.name = req.body.name;
+    res.json(user);
 });
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
