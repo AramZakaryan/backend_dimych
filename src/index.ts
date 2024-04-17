@@ -16,7 +16,10 @@ const db = {
 
 app
     .get('/', (req, res) => {
-        res.json("I have done it")
+        res.json("Hello !")
+    })
+    .get('/users', (req, res) => {
+        res.json(db)
     })
     .post("/user", (req, res) => {
         if (!req.body.name) {

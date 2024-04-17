@@ -18,7 +18,7 @@ const db = {
 };
 app
     .get('/', (req, res) => {
-    res.json(db);
+    res.json("I have done it");
 })
     .post("/user", (req, res) => {
     if (!req.body.name) {
